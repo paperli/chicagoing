@@ -28,7 +28,7 @@
         }
         */
 		$(document).ready(function(){
-			$.ajax({
+			/*$.ajax({
 				type:'get',
 				async: false,
 				url:'https://www.artic.edu/collection',
@@ -41,7 +41,7 @@
 				error: function(){
 					alert("error");
 				}
-			});
+			});*/
 
 			$("#info").text("loading...");
 			$.get('arts-1.html', function(data){
@@ -49,7 +49,7 @@
 				var html = $.parseHTML(data);
 				var paints = $(html).find(".m-listing__link");
 				//$("#info").html("count: "+paints.length+"<br><br>");
-				alert(paints.length);
+				//alert(paints.length);
 				var str = "";
 				for (var i = 0; i < paints.length; i++) {
 					paint = paints[i];
