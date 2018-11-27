@@ -29,7 +29,7 @@
         */
 		$(document).ready(function(){
 			$("#info").text("loading...");
-			$.get('arts-1.html', function(data){
+			$.get('https://www.artic.edu/collection', function(data){
 				
 				var html = $.parseHTML(data);
 				var paints = $(html).find(".m-listing__link");
