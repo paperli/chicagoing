@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Fetcher</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		/*
+		{
+            "artist":"Georges Seurat",
+            "title":"A Sunday on La Grande Jatte — 1884",
+            "pic":"https://www.artic.edu/iiif/2/88d65792-afb3-c90b-56d7-6f95967fa731/full/600,/0/default.jpg",
+            "origin":"France",
+            "date":{
+                "start":1884,
+                "end":1886
+            },
+            "medium":"Oil on canvas",
+            "inscription":"Inscribed at lower right: Seurat",
+            "dimension":{
+                "width":308.1,
+                "height":207.5
+            },
+            "credit":"Helen Birch Bartlett Memorial Collection",
+            "reference_number":1926.224,
+            "tale":"“Bedlam,” “scandal,” and “hilarity” were among the epithets used to describe what is now considered Georges Seurat’s greatest work, and one of the most remarkable paintings of the nineteenth century, when it was first exhibited in Paris. Seurat labored extensively over A Sunday on La Grande Jatte—1884, reworking the original as well as completing numerous preliminary drawings and oil sketches (the Art Institute has one such sketch and two drawings). With what resembles scientific precision, the artist tackled the issues of color, light, and form. Inspired by research in optical and color theory, he juxtaposed tiny dabs of colors that, through optical blending, form a single and, he believed, more brilliantly luminous hue. To make the experience of the painting even more intense, he surrounded the canvas with a frame of painted dashes and dots, which he, in turn, enclosed with a pure white wood frame, similar to the one with which the painting is exhibited today. The very immobility of the figures and the shadows they cast makes them forever silent and enigmatic. Like all great master-pieces, La Grande Jatte continues to fascinate and elude.",
+            "copyright":""
+        }
+        */
+		$(document).ready(function(){
+			$("#info").text("loading...");
+			$.get('arts-1.html', function(data){
+				
+				var html = $.parseHTML(data);
+				var paints = $(html).find(".m-listing__link");
+				//$("#info").html("count: "+paints.length+"<br><br>");
+				alert(paints.length);
+				var str = "";
+				for (var i = 0; i < paints.length; i++) {
+					paint = paints[i];
+					artist = $(paint).find(".subtitle").html().replace(/\"/g,"\\\"").replace(/(?:\\r\\n|\\r|\\n)/g, ' ').replace(/<br\s*\/?>/gi, ' ');
+					title = $(paint).find(".title").html().replace(/\"/g,"\\\"").replace(/(?:\\r\\n|\\r|\\n)/g, ' ').replace(/<br\s*\/?>/gi, ' ');
+					image = $(paint).find("img")[0];
+					pic = $(image).attr("data-pin-media");
+					width = $(image).attr("width");
+					height = $(image).attr("height");
+					link = $(paint).attr("href");
+
+					if (typeof pic == 'undefined') {
+						continue;
+					}
+
+					str += "{<br>";
+					str += "\"artist\":\"" + artist + "\",<br>";
+					str += "\"title\":\"" + title + "\",<br>";
+					str += "\"pic\":\"" + pic + "\",<br>";
+					str += "\"link\":\"" + link + "\",<br>";
+					str += "\"origin\":\"\",<br>";
+					str += "\"date\":{<br>";
+					str += "\"start\":0,<br>";
+					str += "\"end\":0<br>";
+					str += "},<br>";
+					str += "\"medium\":\"\",<br>";
+					str += "\"inscription\":\"\",<br>";
+					str += "\"dimension\":{<br>";
+					var w = (typeof width == 'undefined') ? 800 : width;
+					var h = (typeof height == 'undefined') ? 800 : height;
+					str += "\"width\":" + w + ",<br>";
+					str += "\"height\":" + h + "<br>";
+					str += "},<br>";
+					str += "\"credit\":\"\",<br>";
+					str += "\"reference_number\":0,<br>";
+					str += "\"tale\":\"\",<br>";
+					str += "\"copyright\":\"\"<br>";
+					str += "},<br><br>";
+				}
+				$("#info").html(str);
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id="info">
+		aa
+	</div>
+</body>
+</html>
