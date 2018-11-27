@@ -28,8 +28,23 @@
         }
         */
 		$(document).ready(function(){
+			$.ajax({
+				type:'get',
+				async: false,
+				url:'https://www.artic.edu/collection',
+				dataType:'jsonp',
+				jsonp:'mycallback',
+				jsonpCallback:'aaaa',
+				success: function(res){
+					alert(res.msg);
+				},
+				error: function(){
+					alert(error);
+				}
+			});
+
 			$("#info").text("loading...");
-			$.get('https://www.artic.edu/collection', function(data){
+			$.get('arts-1.html', function(data){
 				
 				var html = $.parseHTML(data);
 				var paints = $(html).find(".m-listing__link");
